@@ -1446,26 +1446,29 @@ function showAuthScreen(mode='login'){
   showAuthMode(mode);
 }
   function showAuthMode(mode='login'){
-    const panels = [
-        'loginPanel',
-        'signupPanel',
-        'changePasswordPanel',
-        'emergencyResetPanel'
-    ];
+    const panels = {
+        login: 'loginPanel',
+        signup: 'signupPanel',
+        firstTimeSetup: 'signupPanel',
+        change: 'changePasswordPanel',
+        changePassword: 'changePasswordPanel',
+        forgot: 'forgotPasswordPanel',
+        emergencyReset: 'emergencyResetPanel',
+        emergency: 'emergencyResetPanel'
+    };
 
-    panels.forEach(function(id){
+    Object.values(panels).forEach(function(id){
         const panel = document.getElementById(id);
-        if(panel){
-            panel.classList.toggle('hidden',
-                mode !== (
-                    id === 'loginPanel' ? 'login' :
-                    id === 'signupPanel' ? 'signup' :
-                    id === 'changePasswordPanel' ? 'changePassword' :
-                    'emergencyReset'
-                )
-            );
-        }
+        if(panel) panel.classList.add('hidden');
     });
+
+    const panelId = panels[mode] || panels.login;
+    const panel = document.getElementById(panelId);
+
+    if(panel){
+        panel.classList.remove('hidden');
+        panel.scrollIntoView({behavior:'smooth', block:'start'});
+    }
 }
 function showAppView(view){
   currentAppView = view;
