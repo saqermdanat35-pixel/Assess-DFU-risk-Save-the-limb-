@@ -1445,8 +1445,28 @@ function showAuthScreen(mode='login'){
   if(auth) auth.classList.remove('hidden');
   showAuthMode(mode);
 }
+  function showAuthMode(mode='login'){
+    const panels = [
+        'loginPanel',
+        'signupPanel',
+        'changePasswordPanel',
+        'emergencyResetPanel'
+    ];
 
-
+    panels.forEach(function(id){
+        const panel = document.getElementById(id);
+        if(panel){
+            panel.classList.toggle('hidden',
+                mode !== (
+                    id === 'loginPanel' ? 'login' :
+                    id === 'signupPanel' ? 'signup' :
+                    id === 'changePasswordPanel' ? 'changePassword' :
+                    'emergencyReset'
+                )
+            );
+        }
+    });
+}
 function showAppView(view){
   currentAppView = view;
   const workspace = document.getElementById('workspaceScreen');
