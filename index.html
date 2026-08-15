@@ -1657,7 +1657,7 @@ const questionDomains = [
       {
         title: 'Dermatologic exam',
         questions: [
-          { id: 16, text: 'Does the patient have open wounds or fissures?' },
+          { id: 16, text: 'Does the patient have open wounds or fissures with or without infection?' },
           { id: 17, text: 'Does the patient have discolored, ingrown, or elongated nails?' },
           { id: 18, text: 'Are there signs of fungal infection?' },
           { id: 19, text: 'Does the patient have discolored and/or hypertrophic skin lesions, calluses, or corns?' },
@@ -1682,8 +1682,8 @@ const questionDomains = [
         title: 'Vascular exam',
         questions: [
           { id: 25, text: 'Is the hair growth on the foot dorsum or lower limb decreased?' },
-          { id: 26, text: 'Are the dorsalis pedis and posterior tibial pulses not palpable, with or without gangrene?' },
-          { id: 27, text: 'Is there a temperature difference between the calves and feet, or between the left and right foot?' }
+          { id: 26, text: 'Are the dorsalis pedis and posterior tibial pulses not palpable, with or without gangrene/ischemia?' },
+          { id: 27, text: 'Is there a temperature difference between the calves and feet, or between the left and right foot,ischemia,gangrene?' }
         ]
       },
       {
@@ -2833,12 +2833,12 @@ function yes(id){
 
 function getAssessmentData(){
   /* Risk Category criteria updated from Word file dated 03/05/2026.
-     Urgent: any of Q11, Q15, Q16, Q22, Q26.
-     LOPS: Q21 only. PAD: Q14 or Q26. Deformity: Q23 or Q24.
+     Urgent: any of Q11, Q15, Q16, Q22, Q27.
+     LOPS: Q21 only. PAD: Q2, Q14 or Q26. Deformity: Q23 or Q24.
      History of foot ulcer/amputation: Q1. ESRD: Q7. */
-  const UrgentFlag = [11,15,16,22,26].some(yes) ? 1 : 0;
+  const UrgentFlag = [11,15,16,22,27].some(yes) ? 1 : 0;
   const LOPSFlag = yes(21) ? 1 : 0;
-  const PADFlag = [14,26].some(yes) ? 1 : 0;
+  const PADFlag = [2,14,26].some(yes) ? 1 : 0;
   const DeformityFlag = [23,24].some(yes) ? 1 : 0;
   const HistoryFlag = yes(1) ? 1 : 0;
   const ESRDFlag = yes(7) ? 1 : 0;
@@ -2846,6 +2846,9 @@ function getAssessmentData(){
   let riskScore = '0';
   if(UrgentFlag === 1){
     riskScore = 'URGENT';
+  }else if(HistoryFlag === 1){
+    riskScore = '3';
+}
   }else if(
     ((LOPSFlag || PADFlag) && (HistoryFlag || ESRDFlag))
   ){
